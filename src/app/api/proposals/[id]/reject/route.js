@@ -16,7 +16,7 @@ export async function PATCH(req, { params }) {
     if (!_id) return json({ message: "Invalid proposal id" }, 400);
 
     const db = await getDb();
-    const proposals = db.collection("proposals");
+    const proposals = db.collection(process.env.PROPOSAL_COLLECTION || "Proposal");
     const proposal = await proposals.findOne({ _id });
 
     if (!proposal) return json({ message: "Proposal not found" }, 404);

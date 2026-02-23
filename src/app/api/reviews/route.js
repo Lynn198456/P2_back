@@ -14,7 +14,7 @@ export async function GET(req) {
 
     const query = userId ? { revieweeId: userId } : {};
     const db = await getDb();
-    const items = await db.collection("reviews").find(query).sort({ createdAt: -1 }).toArray();
+    const items = await db.collection(process.env.REVIEW_COLLECTION || "Review").find(query).sort({ createdAt: -1 }).toArray();
     return json(cleanDocs(items));
   } catch (error) {
     return json({ message: "Failed to load reviews", error: error.message }, 500);
@@ -43,7 +43,7 @@ export async function POST(req) {
     };
 
     const db = await getDb();
-    const result = await db.collection("reviews").insertOne(doc);
+    const result = await db.collection(process.env.REVIEW_COLLECTION || "Review").insertOne(doc);
     return json(cleanDoc({ ...doc, _id: result.insertedId }), 201);
   } catch (error) {
     return json({ message: "Failed to create review", error: error.message }, 500);

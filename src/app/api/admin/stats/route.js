@@ -17,7 +17,7 @@ export async function GET(req) {
     const [totalUsers, activeJobs, activeContracts] = await Promise.all([
       db.collection(process.env.USER_COLLECTION || "userData").countDocuments({}),
       db.collection(process.env.JOB_COLLECTION || "Job").countDocuments({ status: "open" }),
-      db.collection("contracts").countDocuments({ status: "active" }),
+      db.collection(process.env.CONTRACT_COLLECTION || "Contract").countDocuments({ status: "active" }),
     ]);
 
     return json({ totalUsers, activeJobs, activeContracts });

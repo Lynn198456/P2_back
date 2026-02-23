@@ -31,7 +31,7 @@ export async function GET(req) {
     }
 
     const db = await getDb();
-    const items = await db.collection("proposals").find(query).sort({ createdAt: -1 }).toArray();
+    const items = await db.collection(process.env.PROPOSAL_COLLECTION || "Proposal").find(query).sort({ createdAt: -1 }).toArray();
     return json(cleanDocs(items));
   } catch (error) {
     return json({ message: "Failed to load proposals", error: error.message }, 500);
@@ -52,7 +52,7 @@ export async function POST(req) {
 
     const db = await getDb();
     const jobs = db.collection(process.env.JOB_COLLECTION || "Job");
-    const proposals = db.collection("proposals");
+    const proposals = db.collection(process.env.PROPOSAL_COLLECTION || "Proposal");
 
     const jobObjectId = toObjectId(payload.jobId);
     const job = await jobs.findOne({ _id: jobObjectId || payload.jobId });

@@ -18,7 +18,7 @@ export async function GET(req) {
     if (auth.user.role === "Freelancer") query.freelancerId = auth.user.id;
 
     const db = await getDb();
-    const items = await db.collection("contracts").find(query).sort({ createdAt: -1 }).toArray();
+    const items = await db.collection(process.env.CONTRACT_COLLECTION || "Contract").find(query).sort({ createdAt: -1 }).toArray();
     return json(cleanDocs(items));
   } catch (error) {
     return json({ message: "Failed to load contracts", error: error.message }, 500);

@@ -16,7 +16,7 @@ export async function PATCH(req, { params }) {
     if (!_id) return json({ message: "Invalid contract id" }, 400);
 
     const db = await getDb();
-    const contracts = db.collection("contracts");
+    const contracts = db.collection(process.env.CONTRACT_COLLECTION || "Contract");
     const contract = await contracts.findOne({ _id });
     if (!contract) return json({ message: "Contract not found" }, 404);
 

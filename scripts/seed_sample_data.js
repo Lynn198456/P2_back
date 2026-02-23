@@ -28,6 +28,10 @@ function loadEnvFile(filePath) {
     const dbName = process.env.MONGODB_DB || 'Web_P_Hsu';
     const userCollectionName = process.env.USER_COLLECTION || 'userData';
     const jobCollectionName = process.env.JOB_COLLECTION || 'Job';
+    const proposalCollectionName = process.env.PROPOSAL_COLLECTION || 'Proposal';
+    const contractCollectionName = process.env.CONTRACT_COLLECTION || 'Contract';
+    const paymentCollectionName = process.env.PAYMENT_COLLECTION || 'Payment';
+    const reviewCollectionName = process.env.REVIEW_COLLECTION || 'Review';
 
     if (!uri) {
       throw new Error('Missing MONGODB_URI. Set it in .env.local');
@@ -39,10 +43,10 @@ function loadEnvFile(filePath) {
 
     const users = db.collection(userCollectionName);
     const jobs = db.collection(jobCollectionName);
-    const proposals = db.collection('proposals');
-    const contracts = db.collection('contracts');
-    const payments = db.collection('payments');
-    const reviews = db.collection('reviews');
+    const proposals = db.collection(proposalCollectionName);
+    const contracts = db.collection(contractCollectionName);
+    const payments = db.collection(paymentCollectionName);
+    const reviews = db.collection(reviewCollectionName);
 
     const now = new Date();
     const defaultPassword = 'Password123';
@@ -227,7 +231,15 @@ function loadEnvFile(filePath) {
 
     console.log('Sample data seeded successfully.');
     console.log('Database:', dbName);
-    console.log('Collections:', userCollectionName, jobCollectionName, 'proposals', 'contracts', 'payments', 'reviews');
+    console.log(
+      'Collections:',
+      userCollectionName,
+      jobCollectionName,
+      proposalCollectionName,
+      contractCollectionName,
+      paymentCollectionName,
+      reviewCollectionName
+    );
     console.log('Login credentials (all sample users):');
     console.log('Password:', defaultPassword);
     console.log('- admin@webphsu.com (Admin)');

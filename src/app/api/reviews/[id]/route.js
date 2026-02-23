@@ -13,7 +13,7 @@ export async function GET(_req, { params }) {
     if (!_id) return json({ message: "Invalid review id" }, 400);
 
     const db = await getDb();
-    const review = await db.collection("reviews").findOne({ _id });
+    const review = await db.collection(process.env.REVIEW_COLLECTION || "Review").findOne({ _id });
     if (!review) return json({ message: "Review not found" }, 404);
 
     return json(cleanDoc(review));
@@ -31,7 +31,7 @@ export async function DELETE(req, { params }) {
     if (!_id) return json({ message: "Invalid review id" }, 400);
 
     const db = await getDb();
-    const reviews = db.collection("reviews");
+    const reviews = db.collection(process.env.REVIEW_COLLECTION || "Review");
     const review = await reviews.findOne({ _id });
     if (!review) return json({ message: "Review not found" }, 404);
 

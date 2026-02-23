@@ -18,7 +18,7 @@ export async function GET(req) {
       const [totalUsers, activeJobs, activeContracts] = await Promise.all([
         db.collection(process.env.USER_COLLECTION || "userData").countDocuments({}),
         db.collection(process.env.JOB_COLLECTION || "Job").countDocuments({ status: "open" }),
-        db.collection("contracts").countDocuments({ status: "active" }),
+        db.collection(process.env.CONTRACT_COLLECTION || "Contract").countDocuments({ status: "active" }),
       ]);
 
       return json({
@@ -32,8 +32,8 @@ export async function GET(req) {
 
     if (auth.user.role === "Freelancer") {
       const [jobsApplied, activeContracts] = await Promise.all([
-        db.collection("proposals").countDocuments({ freelancerId: auth.user.id }),
-        db.collection("contracts").countDocuments({ freelancerId: auth.user.id, status: "active" }),
+        db.collection(process.env.PROPOSAL_COLLECTION || "Proposal").countDocuments({ freelancerId: auth.user.id }),
+        db.collection(process.env.CONTRACT_COLLECTION || "Contract").countDocuments({ freelancerId: auth.user.id, status: "active" }),
       ]);
 
       return json({
@@ -47,8 +47,8 @@ export async function GET(req) {
 
     const [postedJobs, activeContracts, paidCount] = await Promise.all([
       db.collection(process.env.JOB_COLLECTION || "Job").countDocuments({ clientId: auth.user.id }),
-      db.collection("contracts").countDocuments({ clientId: auth.user.id, status: "active" }),
-      db.collection("payments").countDocuments({ clientId: auth.user.id }),
+      db.collection(process.env.CONTRACT_COLLECTION || "Contract").countDocuments({ clientId: auth.user.id, status: "active" }),
+      db.collection(process.env.PAYMENT_COLLECTION || "Payment").countDocuments({ clientId: auth.user.id }),
     ]);
 
     return json({

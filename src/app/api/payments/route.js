@@ -17,7 +17,7 @@ export async function GET(req) {
     if (auth.user.role === "Freelancer") query.freelancerId = auth.user.id;
 
     const db = await getDb();
-    const items = await db.collection("payments").find(query).sort({ createdAt: -1 }).toArray();
+    const items = await db.collection(process.env.PAYMENT_COLLECTION || "Payment").find(query).sort({ createdAt: -1 }).toArray();
     return json(cleanDocs(items));
   } catch (error) {
     return json({ message: "Failed to load payments", error: error.message }, 500);
@@ -47,7 +47,7 @@ export async function POST(req) {
     };
 
     const db = await getDb();
-    const result = await db.collection("payments").insertOne(doc);
+    const result = await db.collection(process.env.PAYMENT_COLLECTION || "Payment").insertOne(doc);
     return json(cleanDoc({ ...doc, _id: result.insertedId }), 201);
   } catch (error) {
     return json({ message: "Failed to create payment", error: error.message }, 500);
